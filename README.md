@@ -1,4 +1,4 @@
-# InstagramClone Project-InstagramNight App
+# InstaClone
 
 An application where users can:
 *   Sign up
