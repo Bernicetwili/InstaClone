@@ -18,7 +18,7 @@ from decouple import config,Csv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+MODE=config("MODE", default="dev")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -26,9 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY',default=1)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 
 # Application definition
@@ -77,8 +79,8 @@ WSGI_APPLICATION = 'Instaclone.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
+if config('MODE')=="dev":
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': config('DB_NAME'),
@@ -86,6 +88,12 @@ DATABASES = {
         'PASSWORD': config('DB_PASSWORD'),
     }
 }
+else:
+       DATABASES = {
+       'default': dj_database_url.config(
+           default=config('DATABASE_URL')
+       )
+   } 
 
 
 # Password validation
@@ -136,6 +144,11 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Login
+LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/users/login/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
