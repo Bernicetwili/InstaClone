@@ -1,5 +1,10 @@
 # InstaClone
 
+## Screenshots 
+###### Home page
+
+[![Screenshot-from-2021-05-31-15-08-18.png](https://i.postimg.cc/6p21s62J/Screenshot-from-2021-05-31-15-08-18.png)](https://postimg.cc/PCHMYjQ2)
+
 An application where users can:
 *   Sign up
 *   Sign in (authentication)
